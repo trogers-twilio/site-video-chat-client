@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Basic Flex Video Chat Demo Site
+This site provides a very basic example of how to initiate a Twilio video from a customer facing site. Starting the video chat will create a task in Twilio, which gets routed to Flex. A corresponding Flex plugin in required to handle this video task. You can find that Flex plugin here:
+
+[https://github.com/trogers-twilio/plugin-video-chat](https://github.com/trogers-twilio/plugin-video-chat)
+
+This code is far from production ready. Please use it as an example only and incorporate it into your own code as appropriate.
+
 ## Available Scripts
 
 In the project directory, you can run:
