@@ -206,6 +206,8 @@ export default class VideoComp extends Component {
     // Participant joining room
     room.on("participantConnected", participant => {
       console.log("Joining: '" + participant.identity + "'");
+      this.refs.remoteMedia.innerHTML = "";
+      this.attachParticipantTracks(participant, this.refs.remoteMedia);
     });
 
     // Attach participant’s tracks to DOM when they add a track
