@@ -78,7 +78,12 @@ export default class VideoComp extends Component {
   // Attach the Tracks to the DOM.
   attachTracks(tracks, container) {
     tracks.forEach(track => {
-      container.appendChild(track.track.attach());
+      if(track.track)
+        container.appendChild(track.track.attach());
+      else
+        track.on('subscribed', function(track) {
+          container.appendChild(track.attach());
+        });
     });
   }
 
