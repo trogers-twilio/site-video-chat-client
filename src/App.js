@@ -1,7 +1,6 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-import VideoComp from './components/VideoComp';
+import React from "react";
+import "./App.css";
+import VideoComp from "./components/VideoComp";
 
 function App() {
   return (

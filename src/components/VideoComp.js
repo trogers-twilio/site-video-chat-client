@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import Video from "twilio-video";
 import { Container, Row, Col, Button, Input } from "reactstrap";
 
-const twilioRuntimeDomain = 'folly-rail-4787.twil.io';
+/**
+ * Replace with your twilio runtime domain
+ */
+const twilioRuntimeDomain = "ENTER_YOUR_DOMAIN.twil.io";
 
 export default class VideoComp extends Component {
   constructor(props) {
@@ -56,7 +59,7 @@ export default class VideoComp extends Component {
     }
     Video.connect(this.state.token, connectOptions).then(
       this.roomJoined,
-      error => {
+      (error) => {
         alert("Could not connect to Twilio: " + error.message);
       }
     );
@@ -77,8 +80,8 @@ export default class VideoComp extends Component {
 
   // Attach the Tracks to the DOM.
   attachTracks(tracks, container) {
-    tracks.forEach(track => {
-      container.appendChild(track.track.attach());
+    tracks.forEach((track) => {
+      container.appendChild(track.attach());
     });
   }
 
@@ -90,8 +93,8 @@ export default class VideoComp extends Component {
 
   // Detach the Tracks from the DOM.
   detachTracks(tracks) {
-    tracks.forEach(function(track) {
-      track.detach().forEach(function(detachedElement) {
+    tracks.forEach(function (track) {
+      track.detach().forEach(function (detachedElement) {
         detachedElement.remove();
       });
     });
@@ -112,7 +115,7 @@ export default class VideoComp extends Component {
       : Video.createLocalTracks();
 
     localTracksPromise.then(
-      tracks => {
+      (tracks) => {
         this.setState({
           previewTracks: tracks
         });
@@ -122,7 +125,7 @@ export default class VideoComp extends Component {
           this.attachParticipantTracks({ tracks: tracks }, previewContainer);
         }
       },
-      function(error) {
+      function (error) {
         console.error("Unable to access local media", error);
       }
     );
@@ -137,7 +140,7 @@ export default class VideoComp extends Component {
   }
 
   onShareScreen() {
-    this.getScreenShare().then(stream => {
+    this.getScreenShare().then((stream) => {
       this.setState({
         screenTrack: stream.getVideoTracks()[0]
       });
@@ -164,8 +167,8 @@ export default class VideoComp extends Component {
         worker
       )}&customerName=${customerName}&roomName=${roomName}&phoneNumber=${number}`
     )
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log("task data", data);
       });
   }
@@ -197,32 +200,32 @@ export default class VideoComp extends Component {
     }
 
     // Attach the Tracks of the room's participants.
-    room.participants.forEach(participant => {
+    room.participants.forEach((participant) => {
       console.log("Already in Room: '" + participant.identity + "'");
       var previewContainer = this.refs.remoteMedia;
       this.attachParticipantTracks(participant, previewContainer);
     });
 
     // Participant joining room
-    room.on("participantConnected", participant => {
+    room.on("participantConnected", (participant) => {
       console.log("Joining: '" + participant.identity + "'");
     });
 
     // Attach participant’s tracks to DOM when they add a track
-    room.on("trackAdded", (track, participant) => {
+    room.on("trackSubscribed", (track, participant) => {
       console.log(participant.identity + " added track: " + track.kind);
       var previewContainer = this.refs.remoteMedia;
       this.attachTracks([track], previewContainer);
     });
 
     // Detach participant’s track from DOM when they remove a track.
-    room.on("trackRemoved", (track, participant) => {
+    room.on("trackUnsubscribed", (track, participant) => {
       console.log(participant.identity + " removed track: " + track.kind);
       this.detachTracks([track]);
     });
 
     // Detach all participant’s track when they leave a room.
-    room.on("participantDisconnected", participant => {
+    room.on("participantDisconnected", (participant) => {
       console.log("Participant '" + participant.identity + "' left the room");
       this.detachParticipantTracks(participant);
     });
@@ -231,7 +234,7 @@ export default class VideoComp extends Component {
     // of all other participants, including that of the LocalParticipant.
     room.on("disconnected", () => {
       if (this.state.previewTracks) {
-        this.state.previewTracks.forEach(track => {
+        this.state.previewTracks.forEach((track) => {
           track.stop();
         });
       }
@@ -252,12 +255,10 @@ export default class VideoComp extends Component {
 
   componentDidMount() {
     fetch(
-      `https://${twilioRuntimeDomain}/flexvideotokenizer?Identity=${
-        this.state.identity
-      }`
+      `https://${twilioRuntimeDomain}/flexvideotokenizer?Identity=${this.state.identity}`
     )
-      .then(res => res.json())
-      .then(data => {
+      .then((res) => res.json())
+      .then((data) => {
         console.log("data:", data);
         this.setState({
           token: data.token,
